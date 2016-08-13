@@ -1,0 +1,17 @@
+Thumbs.db
+.DS_Store
+node_modules
+node_modules/
+.sass-cache/
+*.log
+
+public/.htaccess
+public/nginx.conf
+
+public/assets/components/*
+
+public/assets/scripts/dist/*
+!public/assets/scripts/dist/index.php
+
+public/assets/styles/dist/*
+!public/assets/styles/dist/index.php*
