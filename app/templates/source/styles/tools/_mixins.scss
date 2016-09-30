@@ -4,7 +4,7 @@
   @if not map-has-key($breakpoints, $name) {
     @warn "Warning: `#{$name}` não é um breakpoint válido.";
   }@else {
-    @media (max-width: map-get($breakpoints, $name)) {
+    @media (min-width: map-get($breakpoints, $name)) {
       @content;
     }
   }
@@ -15,8 +15,8 @@
 @mixin clearfix() {
   &:before,
   &:after {
-    content: " "; // 1
-    display: table; // 2
+    content: " ";
+    display: table;
   }
   &:after {
     clear: both;

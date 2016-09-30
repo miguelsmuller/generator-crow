@@ -1,19 +1,18 @@
-/* # VARIABLES
-================================================== */
 $animation-support: webkit, moz, o, ms, not khtml;
 
 $susy: (
+  container: 1040px,
+  //container: 1170px, Min default
+  //container: 1270px, Default
+  //container: 1360px, Max default
   columns: 12,
   math: fluid,
-  //container: 1170px, PADRÃO MENOR
-  //container: 1360px, PADRÃO MAIOR
-  container: 1270px,
   gutters: 1/2,
   gutter-position: split,
-  use-custom: (
-    box-sizing: false,
-  )
+  global-box-sizing: border-box
 );
+
+@include border-box-sizing;
 
 $breakpoints: (
   mobile: 720px,
