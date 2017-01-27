@@ -1,0 +1,89 @@
+.navbar{
+  @include container();
+  box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff;
+  border-bottom: 1px solid #b3b3b3;
+  background: #fcfcfc;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  .navbar-header{
+    @include clearfix();
+
+    > .navbar-brand{
+      height: 45px;
+      margin: 15px 0px;
+      font-size: 22px;
+      line-height: 45px;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    > .navbar-toggle{
+      float: right;
+      margin: 22px 0px;
+
+      .icon-bar{
+        background-color: #737373;
+        height: 7px;
+        width: 40px;
+        display: block;
+
+        &+.icon-bar{
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+
+  .navbar-content{
+    width: 100%;
+
+    > .navbar-menu{
+      list-style: none;
+      padding-bottom: 20px;
+
+      >li{
+        padding: 10px;
+      }
+    }
+  }
+}
+
+@include breakpoint(menu-navigation) {
+.navbar{
+  @include border-radius(8px);
+  border: 1px solid #b3b3b3;
+  margin-top: 20px;
+
+  .navbar-header{
+    float: left;
+
+    > .navbar-toggle{
+      display: none;
+    }
+  }
+
+  .navbar-content{
+    display: block !important;
+    position: relative;
+    width: 100%;
+
+    > .navbar-menu{
+      float: right;
+      padding: 0px;
+
+      >li{
+        padding: 0px;
+        margin: 15px 0px;
+        float: left;
+        line-height: 45px;
+        padding-right: 25px;
+
+        &:last-child{
+          padding-right: 0px;
+        }
+      }
+    }
+  }
+}
+}

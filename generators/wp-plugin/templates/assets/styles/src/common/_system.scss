@@ -1,0 +1,23 @@
+/* # SYSTEM
+================================================== */
+html {
+  @include box-sizing(border-box);
+}
+
+*,
+*:before,
+*:after {
+  @include box-sizing(inherit);
+  text-rendering: optimizeLegibility;
+}
+
+*{
+  margin: 0px;
+  padding: 0px;
+}
+
+/* # CLEARFIX
+================================================== */
+.clearfix{
+  @include clearfix();
+}

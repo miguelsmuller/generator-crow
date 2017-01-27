@@ -1,0 +1,22 @@
+/* # VARIABLES
+================================================== */
+$animation-support: webkit, moz, o, ms, not khtml;
+
+$susy: (
+  columns: 12,
+  math: fluid,
+  //container: 1170px, PADRÃO MENOR
+  //container: 1360px, PADRÃO MAIOR
+  container: 1270px,
+  gutters: 1/2,
+  gutter-position: split,
+  use-custom: (
+    box-sizing: false,
+  )
+);
+
+$breakpoints: (
+  mobile: 720px,
+  tablet: 1024px,
+  menu-navigation: 835px
+);
