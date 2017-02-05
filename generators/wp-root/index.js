@@ -2,47 +2,60 @@
 
 var util      = require('util')
   , path      = require('path')
-  , fse       = require('fs-extra')
+  , chalk     = require('chalk')
   , remote    = require('yeoman-remote')
   , rndstr    = require('randomstring')
   , generator = require('yeoman-generator');
 
+var questions = [{
+  type    : 'input',
+  name    : 'projectName',
+  message : 'Project name?',
+  default : 'myWordPress'
+},{
+  type    : 'input',
+  name    : 'productionURL',
+  message : 'URL Production?',
+  default : 'production.com.br',
+  filter: function (str){ return str.toLowerCase() }
+},{
+  type    : 'input',
+  name    : 'stagingURL',
+  message : 'URL Staging?',
+  default : 'staging.production.com.br',
+  filter: function (str){ return str.toLowerCase() }
+},{
+  type    : 'input',
+  name    : 'developmentURL',
+  message : 'URL Development?',
+  default : 'localhost.production.com.br',
+  filter: function (str){ return str.toLowerCase() }
+},{
+  name    : 'doVersioning',
+  type    : 'confirm',
+  message : 'Do versioning?',
+},{
+  type    : 'list',
+  name    : 'versionEnvironment',
+  message : 'Versioning environment?',
+  choices : ['github.com', 'bitbucket.org'],
+  when    : function(answers){ return answers.doVersioning === true }
+},{
+  type    : 'input',
+  name    : 'Owner',
+  message : 'Owner repository?',
+  default : 'user',
+  when    : function(answers){ return answers.doVersioning === true }
+}];
+
 module.exports = class extends generator {
   prompting() {
-    this.log.writeln('\n→ INITIAL SETTINGS');
+    this.log.writeln(chalk.bold.yellow('\n→ INITIAL SETTINGS'));
 
-    return this.prompt([{
-      type: 'input',
-      name: 'projectName',
-      message: 'Project name?',
-      default: 'myWordPress'
-    },{
-      type: 'input',
-      name: 'productionURL',
-      message: 'URL Production?',
-      default: 'production.com.br'
-    },{
-      type: 'input',
-      name: 'stagingURL',
-      message: 'URL Staging?',
-      default: 'staging.production.com.br'
-    },{
-      type: 'input',
-      name: 'developmentURL',
-      message: 'URL Development?',
-      default: 'localhost.development.com.br'
-    },{
-      type: 'list',
-      name: 'versionEnvironment',
-      message: 'Versioning environment?',
-      choices: ['github.com', 'bitbucket.org', 'none']
-    },{
-      type: 'input',
-      name: 'Owner',
-      message: 'Owner repository?',
-      default: 'user'
-    }]).then(function (answers) {
-      this.answers = answers
+    return this.prompt(questions).then(function (answers) {
+      this.answers = answers;
+      this.answers.folderName = this.answers.projectName.replace(/\W/g, '-').toLowerCase();
+      this.answers.dbName = this.answers.projectName.replace(/\W/g, '_').toLowerCase();
     }.bind(this));
   }
 
@@ -50,17 +63,17 @@ module.exports = class extends generator {
     cloneWordPress: {
       var done = this.async();
 
-      this.log.writeln('\n→ INSTALLING');
-      this.log.writeln('Please wait while WordPress is downloaded');
+      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING'));
+      this.log.writeln('Please wait while WordPress is downloaded...');
 
-      this.destinationRoot(this.answers.projectName );
+      this.destinationRoot(this.answers.folderName);
 
       remote('https://wordpress.org/latest.zip', function (err, remote) {
 
         this.fs.copy(
           path.join(remote, '**'),
           this.destinationPath('public/'),
-          { globOptions: { dot: true } }
+          { options: { dot: true } }
         );
 
         this.fs.delete(this.destinationPath('public/license.txt'));
@@ -68,11 +81,23 @@ module.exports = class extends generator {
         this.fs.delete(this.destinationPath('public/wp-config-sample.php'));
         this.fs.delete(this.destinationPath('public/wp-content/plugins/hello.php'));
 
+        this.fs.delete(
+          this.destinationPath('public/wp-content/themes/twenty*/**/*'),
+          { options: { dot: true } }
+        );
+
+        this.fs.delete(
+          this.destinationPath('public/wp-content/plugins/akismet/**/*'),
+          { options: { dot: true } }
+        );
+
         done();
-      }.bind(this));
+      }.bind(this), true);
     }
 
     copyTemplate: {
+      this.log.writeln(chalk.bold.yellow('\n→ SETTING FILES'));
+
       var prefix = rndstr.generate({
         length: 3,
         charset: 'hex'
@@ -104,7 +129,7 @@ module.exports = class extends generator {
         this.destinationPath('public/wp-config.development.php'),
         {
           prefix: prefix,
-          dataBaseNameLocal: 'com_' + this.answers.projectName
+          dataBaseNameLocal: 'com_' + this.answers.dbName
         }
       );
 
@@ -113,7 +138,7 @@ module.exports = class extends generator {
         this.destinationPath('public/wp-config.staging.php'),
         {
           prefix: prefix,
-          dataBaseNameStaging: prefix + '_' + this.answers.projectName + '_' + 'staging',
+          dataBaseNameStaging: prefix + '_' + this.answers.dbName + '_' + 'staging',
           stagingURL: this.answers.stagingURL
         }
       );
@@ -123,47 +148,30 @@ module.exports = class extends generator {
         this.destinationPath('public/wp-config.production.php'),
         {
           prefix: prefix,
-          dataBaseNameProduction: prefix + '_' + this.answers.projectName + '_' + 'production',
+          dataBaseNameProduction: prefix + '_' + this.answers.dbName + '_' + 'production',
           productionURL: this.answers.productionURL,
         }
-      );
-
-      this.fs.copyTpl(
-        this.templatePath('public/robots.txt'),
-        this.destinationPath('public/robots.txt'),
-        { productionURL: this.answers.productionURL }
       );
     }
   }
 
-  writing() {
-    this.log.writeln('\n→ SETTING FILES');
-  }
+  writing() {}
 
   install() {
-    this.log.writeln('\n→ INSTALL');
+    if (this.answers.doVersioning === true) {
+      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING GIT'));
 
-    fse.remove(this.destinationPath('public/wp-content/plugins/akismet'), function (err) {
-      if (err) return console.error(err)
-    })
-
-    fse.emptyDir(this.destinationPath('public/wp-content/themes'), function (err) {
-      if (err) return console.error(err)
-    })
-  }
-
-  end() {
-    if (this.answers.versionEnvironment != 'none') {
-      this.log.writeln('\n→ INSTALLING GIT');
-
-      var repository = 'git@'+ this.answers.versionEnvironment +':'+ this.answers.Owner +'/'+ this.answers.projectName  +'.git';
+      var repository = 'git@'+ this.answers.versionEnvironment +':'+ this.answers.Owner +'/'+ this.answers.folderName  +'.git';
 
       this.spawnCommandSync('git', ['init']);
       this.spawnCommandSync('git', ['remote', 'add', 'origin', repository]);
       this.spawnCommandSync('git', ['add', '--all']);
       this.spawnCommandSync('git', ['commit', '-m', '"initial commit"']);
     }
+  }
 
-    this.log.writeln('\n→ SCAFFOLD COMPLETED');
+  end() {
+    this.log.writeln(chalk.bold.yellow('\n→ SCAFFOLD COMPLETED'));
+    this.log.writeln(chalk.bold.green('\n→ PROJECT FOLDER: ' + this.answers.folderName + '/\n'));
   }
 };

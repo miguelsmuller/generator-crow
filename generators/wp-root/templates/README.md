@@ -1,11 +1,18 @@
 # <%= projectName %> #
 Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %>
 
+**License:** Proprietary - Private Use  
+All Rights Reserved - Unauthorized copying of any file of this project, via any medium is strictly prohibited.
+
 ## Project definition ##
 
-Staging URL: http://staging.com.br 
+**Staging URL:** http://staging.com.br  
+**Production URL:** http://production.com.br  
 
-Production URL: http://production.com.br
+## Project Workflow ##
+This workflow uses two branches to record the history of the project. The `master` branch stores the official release history, and the `develop` branch serves as an integration branch for features. It's also convenient to tag all commits in the master branch with a version number.
+
+Each new feature should reside in its own branch. But, instead of branching off of `master`, feature branches use `develop` as their parent branch. When a feature is complete, it gets merged back into `develop`. Features should never interact directly with master.
 
 ## Contributing ##
 
@@ -28,3 +35,7 @@ Production URL: http://production.com.br
 This project uses automated deployment using the git and [Service tools](https://service.com.br).
 
 Deploybot Credentials: user.deploy.project.name@mail.com.br
+
+## Changelog ##
+= 0.1.0 - 2017-12-31 =
+* Site beta released

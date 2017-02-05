@@ -2,71 +2,66 @@
 
 var util      = require('util')
   , path      = require('path')
+  , chalk     = require('chalk')
   , generator = require('yeoman-generator');
+
+var questions = [{
+  type    : 'input',
+  name    : 'pluginName',
+  message : 'Plugin Name?',
+  default : 'Plugin Name Format'
+},{
+  type    : 'input',
+  name    : 'authorName',
+  message : 'Author Name?',
+  default : 'mySelf'
+},{
+  type    : 'input',
+  name    : 'authorNameWordpress',
+  message : 'Author Name Wordpress?',
+  default : 'myself'
+},{
+  type    : 'input',
+  name    : 'authorURL',
+  message : 'Author URL?',
+  default : 'mysite.com.br'
+}];
 
 module.exports = class extends generator {
   prompting() {
-    this.log.writeln('\n→ INITIAL SETTINGS');
+    this.log.writeln(chalk.bold.yellow('\n→ INITIAL SETTINGS'));
 
-    return this.prompt([{
-      type: 'input',
-      name: 'pluginName',
-      message: 'Plugin Name?',
-      default: 'Plugin Name Format'
-    },{
-      type: 'input',
-      name: 'uniqueIdentifier',
-      message: 'Unique Identifier? (plugin-name-format)',
-      default: 'plugin-name-format'
-    },{
-      type: 'input',
-      name: 'mainClass',
-      message: 'Main Class? (Plugin_Name_Format)',
-      default: 'Plugin_Name_Format'
-    },{
-      type: 'input',
-      name: 'authorName',
-      message: 'Author Name?',
-      default: 'mySelf'
-    },{
-      type: 'input',
-      name: 'authorNameWordpress',
-      message: 'Author Name Wordpress?',
-      default: 'myself'
-    },{
-      type: 'input',
-      name: 'authorURL',
-      message: 'Author URL?',
-      default: 'mysite.com.br'
-    }]).then(function (bootAnswers) {
-      this.bootAnswers = bootAnswers
+    return this.prompt(questions).then(function (answers) {
+      this.answers = answers;
+      this.answers.uniqueIdentifier = this.answers.pluginName.replace(/\W/g, '-').toLowerCase();
+      this.answers.mainClass = this.answers.pluginName.replace(/\b\w/g, l => l.toUpperCase()).replace(/\W/g, '_');
     }.bind(this));
   }
 
   configuring() {
-    this.log.writeln('\n→ INSTALLING');
+    this.log.writeln(chalk.bold.yellow('\n→ INSTALLING'));
 
     this.fs.copy(
       this.templatePath('**'),
-      this.destinationPath(this.bootAnswers.uniqueIdentifier),
+      this.destinationPath(this.answers.uniqueIdentifier),
       { globOptions: { dot: true } }
     );
 
-    this.destinationRoot(this.bootAnswers.uniqueIdentifier);
+    this.destinationRoot(this.answers.uniqueIdentifier);
   }
 
   writing() {
-    this.log.writeln('\n→ SETTING FILES');
+    this.log.writeln(chalk.bold.yellow('\n→ SETTING FILES'));
 
     this.fs.copyTpl(
       this.templatePath('scheme-plugin.php'),
-      this.destinationPath(this.bootAnswers.uniqueIdentifier + '.php'),
+      this.destinationPath(this.answers.uniqueIdentifier + '.php'),
       {
-        pluginName       : this.bootAnswers.pluginName,
-        authorName       : this.bootAnswers.authorName,
-        authorURL        : this.bootAnswers.authorURL,
-        uniqueIdentifier : this.bootAnswers.uniqueIdentifier,
-        mainClass        : this.bootAnswers.mainClass,
+        pluginName       : this.answers.pluginName,
+        authorName       : this.answers.authorName,
+        authorURL        : this.answers.authorURL,
+        uniqueIdentifier : this.answers.uniqueIdentifier,
+        mainClass        : this.answers.mainClass,
       }
     );
 
@@ -76,8 +71,8 @@ module.exports = class extends generator {
       this.templatePath('readme.txt'),
       this.destinationPath('readme.txt'),
       {
-        pluginName       : this.bootAnswers.pluginName,
-        authorNameWordpress: this.bootAnswers.authorNameWordpress
+        pluginName       : this.answers.pluginName,
+        authorNameWordpress: this.answers.authorNameWordpress
       }
     );
 
@@ -85,9 +80,9 @@ module.exports = class extends generator {
       this.templatePath('README.md'),
       this.destinationPath('README.md'),
       {
-        pluginName : this.bootAnswers.pluginName,
-        authorName : this.bootAnswers.authorName,
-        authorURL  : this.bootAnswers.authorURL,
+        pluginName : this.answers.pluginName,
+        authorName : this.answers.authorName,
+        authorURL  : this.answers.authorURL,
       }
     );
 
@@ -95,23 +90,24 @@ module.exports = class extends generator {
       this.templatePath('package.json'),
       this.destinationPath('package.json'),
       {
-        uniqueIdentifier : this.bootAnswers.uniqueIdentifier,
-        pluginName       : this.bootAnswers.pluginName,
-        authorName       : this.bootAnswers.authorName,
-        authorURL        : this.bootAnswers.authorURL,
+        uniqueIdentifier : this.answers.uniqueIdentifier,
+        pluginName       : this.answers.pluginName,
+        authorName       : this.answers.authorName,
+        authorURL        : this.answers.authorURL,
       }
     );
   }
 
   install() {
     if (!this.options.skipInstall && !this.options['skip-install']) {
-      this.log.writeln('\n→ INSTALLING DEPENDENCIES');
+      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING DEPENDENCIES'));
 
       this.npmInstall();
     }
   }
 
   end() {
-    this.log.writeln('\n→ SCAFFOLD COMPLETED');
+    this.log.writeln(chalk.bold.yellow('\n→ SCAFFOLD COMPLETED'));
+    this.log.writeln(chalk.bold.green('\n→ PLUGIN FOLDER: ' + this.answers.uniqueIdentifier + '/\n'));
   }
 };

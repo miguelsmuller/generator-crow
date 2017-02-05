@@ -2,7 +2,7 @@
   "name": "generator-crow",
   "description": "Simple and extensible yeoman generator for web projects. The best folders architecture that a project can have.",
   "homepage": "https://github.com/miguelsmuller/generator-crow",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "license": "MIT",
   "author": "Miguel Müller <miguel.sneto[at]devim.com>",
   "main": "app/index.js",
@@ -20,9 +20,9 @@
     "url": "https://github.com/miguelsmuller/generator-crow"
   },
   "dependencies": {
-    "fs-extra": "^2.0.0",
+    "chalk": "^1.1.3",
     "randomstring": "^1.1.5",
-    "yeoman-generator": "^1.0.1",
+    "yeoman-generator": "^1.1.0",
     "yeoman-remote": "^1.0.1"
   }
 }
