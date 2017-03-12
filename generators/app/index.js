@@ -3,7 +3,6 @@
 var util      = require('util')
   , path      = require('path')
   , chalk     = require('chalk')
-  , validator = require('validator')
   , generator = require('yeoman-generator');
 
 var questions = [{
