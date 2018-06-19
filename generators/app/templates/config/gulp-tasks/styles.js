@@ -11,7 +11,7 @@ module.exports = gulp.task('styles', function(){
         require: ['susy'],
         //style: 'expanded',
         style: 'compressed',
-        cacheLocation: './bin/.sass-cache/',
+        cacheLocation: './config/.sass-cache/',
         loadPath: [ '../../public/assets/components' ]
     })
     .pipe(plumber())

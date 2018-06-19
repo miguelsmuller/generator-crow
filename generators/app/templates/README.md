@@ -1,39 +1,34 @@
-# <%= projectName %> #
-Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %>
+# **<%= projectName %>**  
+Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %> - Put here a short description of <%= projectName %>  
 
-## Project definition ##
+- **Stable tag:** 0.0.0
+- **License:** Proprietary - Private Use
+- All Rights Reserved - Unauthorized copying of any file of this project, via any medium is strictly prohibited.
 
-Staging URL: http://staging.com.br 
+## **Project definition**
+- **Staging URL:** <http://staging.com.br>
+- **Production URL:** <http://production.com.br>
 
-Production URL: http://production.com.br
+## **Project Workflow**  
+This workflow uses two branches to record the history of the project. The `master` branch stores the official release history, and the `develop` branch serves as an integration branch for features. It's also convenient to tag all commits in the master branch with a version number.
 
-## Getting started ##
+Each new feature should reside in its own branch. But, instead of branching off of `master`, feature branches use `develop` as their parent branch. When a feature is complete, it gets merged back into `develop`. Features should never interact directly with master.
 
-```
-$ npm install
-$ bower install
-```
+## **Using**  
+This project use `docker` and the benefits of `docker-compose`. Docker is not a traditional virtualization system. Docker facilitates the creation and management of isolated environments. and docker-compose is a tool for defining and running multi-container Docker applications and allows works in all environments: production, staging, development, testing, as well as CI workflows.
 
-## Contributing ##
+### **Start up application**  
+- Builds, (re)creates, starts, and attaches to containers for a service - `docker-compose up --detach --force-recreate`
+- Access the container - `docker exec -it CONTAINER_NAME bash`
 
-1. [Fork it!](https://help.github.com/articles/fork-a-repo/)
-2. [Configuring](https://help.github.com/articles/configuring-a-remote-for-a-fork/) a remote for a fork
-3. [Syncing](https://help.github.com/articles/syncing-a-fork/) a fork with the latest version
-4. Create your feature branch: `git checkout -b issue-123`
-5. Commit your changes: `git commit -m 'Commit message'`
-6. Push to the branch: `git push origin issue-123`
-7. [Submit a pull request](https://help.github.com/articles/using-pull-requests/) :D
+### **Getting started**  
+- Installing initial dependencies of NPM - `npm install`
+- Installing initial external components - `bower install`
 
-#### Before commit, double check your code. Please dude. ####
-- Execute a `git pull` to keep your checkout up-to-date
-- Invoke a `git diff --cached` before committing
-- **NOT COMMIT BEFORE RUNNING THE PROJECT LOCALLY AND SEE THE CHANGES RUNNING**
-- **MAKE SURE THE CHANGES WORK**
-
-## CSS Preprocessors - SASS  ##
+## **CSS Preprocessors - SASS**
 SASS with SCSS format is probably the CSS preprocessor you’re most familiar with. It’s well-established, being an eight-year-old open source project, and it’s really the one that defined the genre of modern CSS preprocessors.
 
-#### CSS Architecture: ITCSS ####
+#### **CSS Architecture: ITCSS**  
 
 Folder | Definition
 :----|:----
@@ -52,7 +47,7 @@ More information and details about ITCSS can be seen in:
 - [Jordan Koschei Article](https://medium.com/@jordankoschei/how-i-shrank-my-css-by-84kb-by-refactoring-with-itcss-2e8dafee123a#.913e4b961)
 - [Lubos Kmetko Article](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/)
 
-#### CSS Methodology: RSCSS ####
+#### **CSS Methodology: RSCSS**  
 
 The metedoligia which should preferably be used in the project is the RSCSS, consisting of a set of ideas to guide a sustainable way the CSS process of creating a website or application.
 
@@ -60,7 +55,7 @@ More information and details about RSCSS can be seen in:
 - [Willian Justen Article](https://willianjusten.com.br/falando-sobre-rscss/)
 
 
-## Task Runner - Gulp ##
+## **Task Runner - Gulp**  
 
 - Watch: `gulp watch`
 - All: `gulp all`
@@ -69,8 +64,28 @@ More information and details about RSCSS can be seen in:
 - Style: `gulp styles`
 - Image: `gulp images`
 
-## Deploy Method - Service ##
+## **Deploy Method - Service**  
+This project uses automated deployment using the git and [DeployService](DeployURL) tools.
 
-This project uses automated deployment using the git and [Service tools](https://service.com.br).
+##### Deploybot credentials: #####
+- **Deploybot URL:** <DeployCustomURL>
+- **Usuário:** DeployUser
 
-Deploybot Credentials: user.deploy.project.name@mail.com.br
+## **Contributing**
+1. [Fork it!](https://help.github.com/articles/fork-a-repo/)
+2. [Configuring](https://help.github.com/articles/configuring-a-remote-for-a-fork/) a remote for a fork
+3. [Syncing](https://help.github.com/articles/syncing-a-fork/) a fork with the latest version
+4. Create your feature branch: `git checkout -b feature-123`
+5. Commit your changes: `git commit -m 'Commit message'`
+6. Push to the branch: `git push origin feature-123`
+7. [Submit a pull request](https://help.github.com/articles/using-pull-requests/) :D
+
+#### **Before commit, double check your code. Please dude.**
+- Execute a `git pull` to keep your checkout up-to-date
+- Invoke a `git diff --cached` before committing
+- **NOT COMMIT BEFORE RUNNING THE PROJECT LOCALLY AND SEE THE CHANGES RUNNING**
+- **MAKE SURE THE CHANGES WORK**
+
+## **Changelog**  
+= **0.0.0 - 0000-00-00** =  
+Project released

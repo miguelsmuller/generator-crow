@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  app:
+    container_name: "${CONTAINER_NAME}_app"
+    build:
+      context: ./config/docker-config
+      dockerfile: Dockerfile-app
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    depends_on:
+       - db
+    environment:
+       WORDPRESS_DB_HOST: db
+       WORDPRESS_DB_USER: $USER
+       WORDPRESS_DB_PASSWORD: $PASSWORD
+       WORDPRESS_DB_NAME: "${CONTAINER_NAME}"
+       WORDPRESS_DEBUG: 1
+       WORDPRESS_TABLE_PREFIX: "${DB_PREFIX}_"
+    volumes:
+      - "./config:/var/config"
+      - "./theme:/var/www/html/wp-content/themes/${COMPOSE_PROJECT_NAME}-theme/"
+      - "./plugins:/var/www/html/wp-content/plugins/"
+
+  db:
+    container_name: "${CONTAINER_NAME}_db"
+    build:
+      context: ./config/docker-config
+      dockerfile: Dockerfile-bd
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - "./config:/var/config"
+    environment:
+       MYSQL_ROOT_PASSWORD: $PASSWORD
+       MYSQL_DATABASE: "${CONTAINER_NAME}"
+       MYSQL_USER: $USER
+       MYSQL_PASSWORD: $PASSWORD

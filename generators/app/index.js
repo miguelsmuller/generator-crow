@@ -10,23 +10,6 @@ var questions = [{
   type    : 'input',
   message : 'Project name?',
   default : 'myProject',
-},{
-  name    : 'doVersioning',
-  type    : 'confirm',
-  message : 'Do versioning?',
-  default : false
-},{
-  name    : 'versionEnvironment',
-  type    : 'list',
-  message : 'Versioning environment?',
-  choices : ['github.com', 'bitbucket.org'],
-  when    : function(answers){ return answers.doVersioning === true }
-},{
-  name    : 'Owner',
-  type    : 'input',
-  message : 'Owner repository?',
-  default : 'user',
-  when    : function(answers){ return answers.doVersioning === true }
 }];
 
 module.exports = class extends generator {
@@ -35,7 +18,10 @@ module.exports = class extends generator {
 
     return this.prompt(questions).then(function (answers) {
       this.answers = answers;
-      this.answers.folderName = this.answers.projectName.replace(/\W/g, '-').toLowerCase();
+
+      this.answers.projectNameDash = this.answers.projectName.replace(/\W/g, '-').toLowerCase();
+      this.answers.projectNameUnderscore = this.answers.projectName.replace(/\W/g, '_').toLowerCase();
+
     }.bind(this));
   }
 
@@ -44,28 +30,48 @@ module.exports = class extends generator {
 
     this.fs.copy(
       this.templatePath('**'),
-      this.destinationPath(this.answers.folderName),
+      this.destinationPath(this.answers.projectNameDash),
       { globOptions: { dot: true } }
     );
 
-    this.destinationRoot(this.answers.folderName);
+    this.destinationRoot(this.answers.projectNameDash);
 
     this.fs.copyTpl(
-      this.templatePath('bower.json'),
-      this.destinationPath('bower.json'),
-      { projectName: this.answers.folderName }
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('package.json'),
-      this.destinationPath('package.json'),
-      { projectName: this.answers.folderName }
+      this.templatePath('.env'),
+      this.destinationPath('.env'),
+      {
+        projectName: this.answers.projectName,
+        projectNameDash: this.answers.projectNameDash,
+        projectNameUnderscore: this.answers.projectNameUnderscore
+      }
     );
 
     this.fs.copyTpl(
       this.templatePath('README.md'),
       this.destinationPath('README.md'),
-      { projectName: this.answers.projectName }
+      {
+        projectName: this.answers.projectName
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('bower.json'),
+      this.destinationPath('bower.json'),
+      {
+        projectName: this.answers.projectName,
+        projectNameDash: this.answers.projectNameDash,
+        projectNameUnderscore: this.answers.projectNameUnderscore
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('package.json'),
+      this.destinationPath('package.json'),
+      {
+        projectName: this.answers.projectName,
+        projectNameDash: this.answers.projectNameDash,
+        projectNameUnderscore: this.answers.projectNameUnderscore
+      }
     );
   }
 
@@ -73,7 +79,9 @@ module.exports = class extends generator {
 
   install() {
     if (!this.options.skipInstall && !this.options['skip-install']) {
-      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING DEPENDENCIES'));
+      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING PREREQUISITES'));
+
+      this.spawnCommandSync('docker-compose', ['up' , '--detach', '--force-recreate']);
 
       this.npmInstall();
       this.bowerInstall();
@@ -81,18 +89,7 @@ module.exports = class extends generator {
   }
 
   end() {
-    if (this.answers.doVersioning === true) {
-      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING GIT'));
-
-      var repository = 'git@'+ this.answers.versionEnvironment +':'+ this.answers.Owner +'/'+ this.answers.projectName  +'.git';
-
-      this.spawnCommandSync('git', ['init']);
-      this.spawnCommandSync('git', ['remote', 'add', 'origin', repository]);
-      this.spawnCommandSync('git', ['add', '--all']);
-      this.spawnCommandSync('git', ['commit', '-m', '"initial commit"']);
-    }
-
     this.log.writeln(chalk.bold.yellow('\n→ SCAFFOLD COMPLETED'));
-    this.log.writeln(chalk.bold.green('\n→ PLUGIN FOLDER: ' + this.answers.uniqueIdentifier + '/\n'));
+    this.log.writeln(chalk.bold.green('\n→ PLUGIN FOLDER: ' + this.answers.projectNameDash + '/\n'));
   }
 };
