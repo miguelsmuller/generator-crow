@@ -8,12 +8,12 @@ const gulp    = require('gulp')
 module.exports = gulp.task('styles', function(){
     return sass(paths.source.styles, {
         compass: true,
+        require: ['susy'],
         //style: 'expanded',
         style: 'compressed',
         cacheLocation: './config/.sass-cache/',
-        loadPath: ['../../public/assets/components', 'node_modules/susy/sass']
+        loadPath: [ '../../public/assets/components' ]
     })
     .pipe(plumber())
     .pipe(gulp.dest(paths.public.css))
 });
-

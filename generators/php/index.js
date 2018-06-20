@@ -37,6 +37,16 @@ module.exports = class extends generator {
     this.destinationRoot(this.answers.projectNameDash);
 
     this.fs.copyTpl(
+      this.templatePath('.env'),
+      this.destinationPath('.env'),
+      {
+        projectName: this.answers.projectName,
+        projectNameDash: this.answers.projectNameDash,
+        projectNameUnderscore: this.answers.projectNameUnderscore
+      }
+    );
+
+    this.fs.copyTpl(
       this.templatePath('README.md'),
       this.destinationPath('README.md'),
       {
@@ -70,6 +80,8 @@ module.exports = class extends generator {
   install() {
     if (!this.options.skipInstall && !this.options['skip-install']) {
       this.log.writeln(chalk.bold.yellow('\n→ INSTALLING PREREQUISITES'));
+
+      this.spawnCommandSync('docker-compose', ['up' , '--detach', '--force-recreate']);
 
       this.npmInstall();
       this.bowerInstall();

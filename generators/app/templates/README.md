@@ -14,14 +14,7 @@ This workflow uses two branches to record the history of the project. The `maste
 
 Each new feature should reside in its own branch. But, instead of branching off of `master`, feature branches use `develop` as their parent branch. When a feature is complete, it gets merged back into `develop`. Features should never interact directly with master.
 
-## **Using**  
-This project use `docker` and the benefits of `docker-compose`. Docker is not a traditional virtualization system. Docker facilitates the creation and management of isolated environments. and docker-compose is a tool for defining and running multi-container Docker applications and allows works in all environments: production, staging, development, testing, as well as CI workflows.
-
-### **Start up application**  
-- Builds, (re)creates, starts, and attaches to containers for a service - `docker-compose up --detach --force-recreate`
-- Access the container - `docker exec -it CONTAINER_NAME bash`
-
-### **Getting started**  
+## **Getting started**  
 - Installing initial dependencies of NPM - `npm install`
 - Installing initial external components - `bower install`
 

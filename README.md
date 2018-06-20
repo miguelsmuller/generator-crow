@@ -1,7 +1,7 @@
 # CROW GENERATOR #
 There are many starting points for building a new web project, but the main idea of this generator is to be simple and extensible, always creating an easy maintenance scheme.
 
-- **Stable tag:** 3.0.0
+- **Stable tag:** 3.0.1
 
 ## Why Crow ##
 
@@ -12,7 +12,8 @@ Crows are able to use simple tools, store food for the winter and store experien
 ## Available generators ##
 
 - static (default)
-- wp:root
+- php (With Docker)
+- wp:root (With Docker)
 - wp:theme
 - wp:plugin
 
@@ -37,6 +38,9 @@ Crows are able to use simple tools, store food for the winter and store experien
 - **MAKE SURE THE CHANGES WORK**
 
 ## **Changelog**
+= **3.0.1 - 2018-06-20** =  
+Updates the dependencies of the project and the PHP version and also creates a specific PHP generator
+
 = **3.0.0 - 2018-06-12** =  
 Adjusting generators to work with docker
 

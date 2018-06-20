@@ -1,0 +1,21 @@
+$animation-support: webkit, moz, o, ms, not khtml;
+
+$susy: (
+  container: 1040px,
+  //container: 1170px, Min default
+  //container: 1270px, Default
+  //container: 1360px, Max default
+  columns: 12,
+  math: fluid,
+  gutters: 1/2,
+  gutter-position: split,
+  global-box-sizing: border-box
+);
+
+@include border-box-sizing;
+
+$breakpoints: (
+  mobile: 720px,
+  tablet: 1024px,
+  menu-navigation: 835px
+);
