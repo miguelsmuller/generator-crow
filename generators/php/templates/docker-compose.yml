@@ -10,5 +10,23 @@ services:
       - "80:80"
       - "443:443"
     restart: always
+    depends_on:
+       - db
     volumes:
-      - "./public:/var/www/html/"
+      - "./system:/var/www/${PROJECT_NAME_DASH}"
+
+  db:
+    container_name: "${PROJECT_NAME_UNDERSCORE}_db"
+    build:
+      context: ./config/docker-config
+      dockerfile: Dockerfile-db
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - "./config:/var/config"
+    environment:
+       MYSQL_ROOT_PASSWORD: $PASSWORD
+       MYSQL_DATABASE: "${PROJECT_NAME_UNDERSCORE}"
+       MYSQL_USER: $USER
+       MYSQL_PASSWORD: $PASSWORD

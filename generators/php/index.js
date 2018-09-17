@@ -55,37 +55,12 @@ module.exports = class extends generator {
     );
 
     this.fs.copyTpl(
-      this.templatePath('bower.json'),
-      this.destinationPath('bower.json'),
+      this.templatePath('config/docker-config/Dockerfile-app'),
+      this.destinationPath('config/docker-config/Dockerfile-app'),
       {
-        projectName: this.answers.projectName,
-        projectNameDash: this.answers.projectNameDash,
-        projectNameUnderscore: this.answers.projectNameUnderscore
+        projectNameDash: this.answers.projectNameDash
       }
     );
-
-    this.fs.copyTpl(
-      this.templatePath('package.json'),
-      this.destinationPath('package.json'),
-      {
-        projectName: this.answers.projectName,
-        projectNameDash: this.answers.projectNameDash,
-        projectNameUnderscore: this.answers.projectNameUnderscore
-      }
-    );
-  }
-
-  writing() { }
-
-  install() {
-    if (!this.options.skipInstall && !this.options['skip-install']) {
-      this.log.writeln(chalk.bold.yellow('\n→ INSTALLING PREREQUISITES'));
-
-      this.spawnCommandSync('docker-compose', ['up' , '--detach', '--force-recreate']);
-
-      this.npmInstall();
-      this.bowerInstall();
-    }
   }
 
   end() {

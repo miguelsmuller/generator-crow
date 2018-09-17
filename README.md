@@ -23,6 +23,7 @@ Crows are able to use simple tools, store food for the winter and store experien
 - `yo crow` or `yo crow [generator]`
 
 ## **Contributing**
+------
 1. [Fork it!](https://help.github.com/articles/fork-a-repo/)
 2. [Configuring](https://help.github.com/articles/configuring-a-remote-for-a-fork/) a remote for a fork
 3. [Syncing](https://help.github.com/articles/syncing-a-fork/) a fork with the latest version
@@ -31,11 +32,14 @@ Crows are able to use simple tools, store food for the winter and store experien
 6. Push to the branch: `git push origin feature-123`
 7. [Submit a pull request](https://help.github.com/articles/using-pull-requests/) :D
 
-#### **Before commit, double check your code. Please dude.**
+##### **Before commit, double check your code. Please dude.**
+- Always check a branch that is being used: `git status`
 - Execute a `git pull` to keep your checkout up-to-date
 - Invoke a `git diff --cached` before committing
 - **NOT COMMIT BEFORE RUNNING THE PROJECT LOCALLY AND SEE THE CHANGES RUNNING**
 - **MAKE SURE THE CHANGES WORK**
+
+> **[Here is a quick guide to git command](https://gist.github.com/leocomelli/2545add34e4fec21ec16)**
 
 ## **Changelog**
 = **3.0.1 - 2018-06-20** =  
