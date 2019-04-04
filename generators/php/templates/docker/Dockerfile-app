@@ -1,0 +1,36 @@
+FROM php:7.3-apache-stretch
+
+RUN apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get autoremove
+
+RUN apt-get install -y \
+    apt-utils \
+    git \
+    zip \
+    zlib1g-dev \
+    libzip-dev \
+    libbz2-dev \
+    libpng-dev \
+    libicu-dev \
+    g++
+
+RUN docker-php-ext-install \
+    zip \
+    bz2 \
+    mbstring \
+    bcmath \
+    pdo_mysql \
+    gd
+
+RUN docker-php-ext-configure intl && \
+    docker-php-ext-install intl
+
+RUN a2enmod rewrite
+
+RUN sed -ri -e 's!/var/www/html!/var/www/emissao-boletim/public!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!/var/www/emissao-boletim!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+WORKDIR /var/www/<%= projectNameDash %>
+
+CMD apachectl -D FOREGROUND

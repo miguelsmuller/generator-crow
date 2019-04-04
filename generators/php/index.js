@@ -37,16 +37,6 @@ module.exports = class extends generator {
     this.destinationRoot(this.answers.projectNameDash);
 
     this.fs.copyTpl(
-      this.templatePath('.env'),
-      this.destinationPath('.env'),
-      {
-        projectName: this.answers.projectName,
-        projectNameDash: this.answers.projectNameDash,
-        projectNameUnderscore: this.answers.projectNameUnderscore
-      }
-    );
-
-    this.fs.copyTpl(
       this.templatePath('README.md'),
       this.destinationPath('README.md'),
       {
@@ -55,8 +45,17 @@ module.exports = class extends generator {
     );
 
     this.fs.copyTpl(
-      this.templatePath('config/docker-config/Dockerfile-app'),
-      this.destinationPath('config/docker-config/Dockerfile-app'),
+      this.templatePath('docker-compose.yml'),
+      this.destinationPath('docker-compose.yml'),
+      {
+        projectNameDash: this.answers.projectNameDash,
+        projectNameUnderscore: this.answers.projectNameUnderscore,
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('docker/Dockerfile-app'),
+      this.destinationPath('docker/Dockerfile-app'),
       {
         projectNameDash: this.answers.projectNameDash
       }

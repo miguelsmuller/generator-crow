@@ -2,31 +2,29 @@ version: '3.3'
 
 services:
   app:
-    container_name: "${PROJECT_NAME_UNDERSCORE}_app"
+    container_name: "<%= projectNameUnderscore %>_app"
     build:
-      context: ./config/docker-config
+      context: ./docker
       dockerfile: Dockerfile-app
     ports:
-      - "80:80"
-      - "443:443"
+      - "80"
+      - "443"
     restart: always
     depends_on:
-       - db
+      - db
     volumes:
-      - "./system:/var/www/${PROJECT_NAME_DASH}"
+      - ".:/var/www/<%= projectNameDash %>"
 
   db:
-    container_name: "${PROJECT_NAME_UNDERSCORE}_db"
+    container_name: "<%= projectNameUnderscore %>_db"
     build:
-      context: ./config/docker-config
+      context: ./docker
       dockerfile: Dockerfile-db
     ports:
-      - "3306:3306"
+      - "3306"
     restart: always
-    volumes:
-      - "./config:/var/config"
     environment:
-       MYSQL_ROOT_PASSWORD: $PASSWORD
-       MYSQL_DATABASE: "${PROJECT_NAME_UNDERSCORE}"
-       MYSQL_USER: $USER
-       MYSQL_PASSWORD: $PASSWORD
+       MYSQL_ROOT_PASSWORD: admin
+       MYSQL_DATABASE: "<%= projectNameUnderscore %>"
+       MYSQL_USER: admin
+       MYSQL_PASSWORD: admin
