@@ -28,8 +28,10 @@ RUN docker-php-ext-configure intl && \
 
 RUN a2enmod rewrite
 
-RUN sed -ri -e 's!/var/www/html!/var/www/emissao-boletim/public!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!/var/www/emissao-boletim!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
+
+RUN sed -ri -e 's!/var/www/html!/var/www/<%= projectNameDash %>/app/public!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!/var/www/<%= projectNameDash %>!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 WORKDIR /var/www/<%= projectNameDash %>
 

@@ -55,7 +55,7 @@ This project use `docker` and the benefits of `docker-compose`. Docker is not a 
 
 ### **Install Dependencies**  
 docker-compose port app 80
-- Installing initial dependencies of PHP - `docker-compose exec app /bin/bash ./config/install.sh`
+- Installing initial dependencies of PHP - `docker-compose exec app composer create-project --prefer-dist laravel/laravel app`
 - Installing initial dependencies of PHP - `docker-compose exec app composer install`
 - Installing initial dependencies of NPM - `docker-compose exec app npm install`
 - Installing initial external components - `docker-compose exec app bower install`
